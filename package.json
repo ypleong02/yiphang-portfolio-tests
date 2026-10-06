@@ -1,0 +1,13 @@
+{
+  "name": "yiphang-portfolio-tests",
+  "version": "1.0.0",
+  "description": "Functional tests (Playwright + TypeScript) for yiphang-portfolio",
+  "private": true,
+  "scripts": {
+    "test": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "@types/node": "^26.6.4"
+  }
+}

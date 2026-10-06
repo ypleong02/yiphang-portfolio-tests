@@ -1,28 +1,7 @@
-import { test, expect, type Locator, type Page } from '@playwright/test';
+import { test, expect } from '@playwright/test';
+import { BASE_URL, clickDarkToggle, isDark } from './support';
 
 // Requirements from "Issue #1: dark-mode toggle" in SPEC.md (lines 10-11).
-
-const BASE_URL = process.env.BASE_URL!;
-
-const isDark = (page: Page) => page.evaluate(() => document.body.classList.contains('dark'));
-
-// SPEC.md line 10 does not name the button, so click each visible button in the nav
-// until one flips the 'dark' class on <body>. Returns that button, already clicked once.
-async function clickDarkToggle(page: Page): Promise<Locator> {
-  const buttons = page.getByRole('navigation').getByRole('button').filter({ visible: true });
-  const count = await buttons.count();
-  for (let i = 0; i < count; i++) {
-    const before = await isDark(page);
-    await buttons.nth(i).click();
-    try {
-      await expect.poll(() => isDark(page), { timeout: 1000 }).toBe(!before);
-      return buttons.nth(i);
-    } catch {
-      // not the toggle, try the next button
-    }
-  }
-  throw new Error(`None of the ${count} visible button(s) in the nav toggled the 'dark' class on <body>.`);
-}
 
 test("SPEC.md line 10: a button in the nav toggles a 'dark' class on <body>", async ({ page }) => {
   await page.goto(BASE_URL, { waitUntil: 'networkidle' });
